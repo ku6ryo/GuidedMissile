@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GuidedMissile : MonoBehaviour
 {
@@ -9,6 +10,19 @@ public class GuidedMissile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+
+    void OnCollisionEnter(Collision other) {
+      var target = GameObject.Find("Target");
+      if (other.gameObject == target) {
+        var exp = GameObject.Find("Explosion");
+        var top = this.transform.Find("Top");
+        if (top != null && exp != null) {
+          var copy = GameObject.Instantiate(exp) as GameObject;
+          copy.transform.position = top.position;
+        }
+        Destroy(this.gameObject);
+      }
     }
 
     // Update is called once per frame
